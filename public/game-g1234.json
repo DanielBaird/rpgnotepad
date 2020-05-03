@@ -1,0 +1,69 @@
+
+{
+    "gameId": "g1234",
+    "name": "Super Cool Game",
+    "owner": { "personId": "p2345", "name": "Daniel Baird" },
+    "encounters": [
+        {
+            "encounterId": "e9876",
+            "name": "Test Encounter",
+            "factions": [
+                {
+                    "factionId": "f123",
+                    "name": "The Erstwhile Players",
+                    "colorScheme": "green"
+                },
+                {
+                    "factionId": "f234",
+                    "name": "Roaming Killers of Dusk",
+                    "colorScheme": "red"
+                },
+                {
+                    "factionId": "f345",
+                    "name": "Environment",
+                    "colorScheme": "brown"
+                }
+            ],
+            "participants": [
+                {
+                    "type": "player",
+                    "player": { "personId": "p3456", "name": "Elora Baird" },
+                    "character": {
+                        "characterId": "c5678",
+                        "name": "Elorabelle"
+                    },
+                    "factionId": "f123",
+                    "actRank": 8
+                },
+                {
+                    "type": "player",
+                    "player": { "personId": "p3456", "name": "Elora Baird" },
+                    "character": {
+                        "characterId": "c6789",
+                        "name": "Speedy Sam"
+                    },
+                    "factionId": "f123",
+                    "actRank": 3
+                },
+                {
+                    "type": "npc",
+                    "character": {
+                        "characterId": "c6789",
+                        "name": "Krosmonoff the Black"
+                    },
+                    "factionId": "f234",
+                    "actRank": 3
+                },
+                {
+                    "type": "environment",
+                    "feature": {
+                        "name": "Earthquake"
+                    },
+                    "factionId": "f345",
+                    "actRank": 3
+                }
+
+            ]
+        }
+    ]
+}

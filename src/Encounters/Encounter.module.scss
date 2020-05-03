@@ -1,0 +1,63 @@
+
+@use "sass:color";
+
+.encounter {
+    background: #def;
+    padding: 1em;
+
+    h1 {
+        padding: 0 0 1em 0;
+        text-shadow: 0 0 2px #fff;
+
+    }
+}
+
+@mixin faction-color($theme: 'default') {
+    $color: #666;
+    @if $theme == 'green' { $color: #061; }
+    @if $theme == 'red'   { $color: #600; }
+    @if $theme == 'brown' { $color: #311; }
+
+    color: $color;
+    // border-left: 1.66em solid $color;
+    box-shadow: inset 0 0 0.25em scale-color($color, $alpha: 90%);
+
+    &:hover {
+        background-color: color-mix($color, #fff);
+    }
+}
+
+.participant {
+    display: flex;
+    flex-direction: row;
+    justify-items: left;
+
+    background-color: #fff;
+    margin: 0 0 0.5em 1.5em;
+    
+    @include faction-color();
+
+    &.green { @include faction-color('green'); }
+    &.red   { @include faction-color('red'); }
+    &.brown { @include faction-color('brown'); }
+
+    .PptAvatar {
+        $font-size-factor: 1.5;
+        color: inherit;
+        background-color: currentColor;
+        text-align: center;
+        text-shadow: 0 0 2px 0 currentColor;
+        font-size: $font-size-factor * 1em;
+        line-height: (1/$font-size-factor) * 3em;
+
+        height: (1/$font-size-factor) * 3em;
+        width: (1/$font-size-factor) * 3em;
+        border-radius: (1/$font-size-factor) * 1.5em;
+        margin-left: -1 * (1/$font-size-factor) * 1.5em;
+
+        .PptAvatarInitials {
+            color: #fff;
+        }
+    }
+}
+
