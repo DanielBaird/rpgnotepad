@@ -19,7 +19,8 @@ export default function Encounter({encounterId}) {
     const game = useContext(GameContext)
     const [encounter, setEncounter] = useState(emptyEncounter)
     const [orderBy, setOrderBy] = useState('actRank')
-    const [factions, setFactions] = useState({})
+    const [ordered, setOrdered] = useState([])
+    const [round, setRound] = useState(1)
     // ----------------------------------------------------
     // load the encounter
     useEffect( ()=> {
@@ -28,19 +29,53 @@ export default function Encounter({encounterId}) {
         )
         setEncounter(enc || emptyEncounter)
     }, [game, encounterId])
-
-    // load factions
-    useEffect( ()=> {
-        let facs = {}
-        encounter.factions.forEach( (f)=> {
-            facs[f.name] = f
-        })
-        setFactions(facs)
-    }, [encounter])
     // ----------------------------------------------------
-    const participants = encounter.participants.map( (p, index) => {
+    // sort the participants
+    useEffect( ()=> {
+        setOrdered(encounter.participants.sort( (p1, p2) => {
+            return (p1.actRank - p2.actRank)
+        }))
+    }, [orderBy, encounter])
+    // ----------------------------------------------------
+    // record that someone has acted
+    function hasActed(participant) {
+        setOrdered(
+            ordered.map( (p) => {
+                if (p === participant) {
+                    p.round = p.round || 0
+                    p.round += 1
+                }
+                return p
+            })
+        )
+    }
+    // ----------------------------------------------------
+    // divide into ready and acted
+    const ready = ordered.filter( 
+        (p) => (!p.round || p.round < round)
+    ).map( (p, index) => {
         return (
             <EncounterParticipant 
+                hasActed={()=> hasActed(p) }
+                mode={index === 0 ? 'up' : 'ready'}
+                participant={p}
+                key={index}
+            />
+        )
+    })
+    if (ordered.length > 0 && ready.length < 1) {
+        setRound(round + 1)
+    }
+    console.log(ready)
+    // ----------------------------------------------------
+    // divide into ready and acted
+    const acted = ordered.filter( 
+        (p) => (p.round && p.round >= round)
+    ).map( (p, index) => {
+        return (
+            <EncounterParticipant 
+                hasActed={()=> hasActed(p) }
+                state='acted'
                 participant={p} 
                 key={index}
             />
@@ -51,14 +86,27 @@ export default function Encounter({encounterId}) {
         <EncounterContext.Provider value={encounter}>
             <div className={styles.encounter}>
                 <h1>{encounter.name} <small>{encounter.encounterId}</small></h1>
+                <RoundMarker current round={round} />
                 <div className={styles.participantsList}>
-                    {participants}
+                    {ready}
                 </div>
-                <pre>
-                    { JSON.stringify(encounter, null, 4) }
-                </pre>
+                { acted.length > 0 ?
+                    <>
+                        <RoundMarker future round={round + 1} />
+                        <div className={styles.participantsList}>
+                            {acted}
+                        </div>
+                    </>
+                : null }
             </div>
         </EncounterContext.Provider>
     )
 }
-
+// ========================================================
+function RoundMarker({current, future, round}) {
+    return (
+        <div className={styles.RoundMarker + (future ? ' ' + styles.future : '')}>
+            {round}
+        </div>
+    )
+}

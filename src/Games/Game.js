@@ -39,9 +39,9 @@ export default function Game(props) {
                         {encounters}
                     </div>
                 }
-                <pre style={{fontSize: "75%", lineHeight: "1.1"}}>
+                {/* <pre style={{fontSize: "75%", lineHeight: "1.1"}}>
                     { JSON.stringify(game, null, 4) }
-                </pre>
+                </pre> */}
             </div>
         </GameContext.Provider>
     )

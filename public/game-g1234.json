@@ -2,55 +2,64 @@
 {
     "gameId": "g1234",
     "name": "Super Cool Game",
-    "owner": { "personId": "p2345", "name": "Daniel Baird" },
+    "ownerId": "p2345",
+    "people": {
+        "p2345": { "name": "Daniel Baird" },
+        "p3456": { "name": "Elora Baird" }
+    },
+    "characters": {
+        "c5678": {
+            "name": ["Lady", "Elorabelle", "the Graceful"],
+            "playerId": "p3456",
+            "HP": 20
+        },
+        "c6789": {
+            "name": ["Speedy Sam"],
+            "playerId": "p3456",
+            "HP": 15
+        },
+        "c7766": {
+            "name": ["Krosmonoff", "the Black"],
+            "playerId": "p2345",
+            "HP": 40
+        }
+    },
     "encounters": [
         {
             "encounterId": "e9876",
             "name": "Test Encounter",
-            "factions": [
-                {
-                    "factionId": "f123",
+            "factions": {
+                "f123": {
                     "name": "The Erstwhile Players",
                     "colorScheme": "green"
                 },
-                {
-                    "factionId": "f234",
+                "f234": {
                     "name": "Roaming Killers of Dusk",
                     "colorScheme": "red"
                 },
-                {
-                    "factionId": "f345",
+                "f345": {
                     "name": "Environment",
                     "colorScheme": "brown"
                 }
-            ],
+            },
             "participants": [
                 {
                     "type": "player",
-                    "player": { "personId": "p3456", "name": "Elora Baird" },
-                    "character": {
-                        "characterId": "c5678",
-                        "name": "Elorabelle"
-                    },
+                    "playerId": "p3456",
+                    "characterId": "c5678",
                     "factionId": "f123",
                     "actRank": 8
                 },
                 {
                     "type": "player",
-                    "player": { "personId": "p3456", "name": "Elora Baird" },
-                    "character": {
-                        "characterId": "c6789",
-                        "name": "Speedy Sam"
-                    },
+                    "playerId": "p3456",
+                    "characterId": "c6789",
                     "factionId": "f123",
                     "actRank": 3
                 },
                 {
                     "type": "npc",
-                    "character": {
-                        "characterId": "c6789",
-                        "name": "Krosmonoff the Black"
-                    },
+                    "characterId": "c7766",
                     "factionId": "f234",
                     "actRank": 3
                 },

@@ -2,6 +2,7 @@
 import React from 'react'
 import {
   BrowserRouter as Router,
+  Link,
   Route,
   Switch
 } from 'react-router-dom'
@@ -15,6 +16,9 @@ function App() {
     <div className="App">
       <Router>
         <Switch>
+          <Route path="/" exact>
+            <Link to="/game/g1234/">Game g1234</Link>
+          </Route>
 
           <Route path="/game/:gameId/:encId?">
             <Game />

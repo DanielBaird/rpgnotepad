@@ -1,65 +1,85 @@
 
 import React, {useContext} from 'react'
 
+import GameContext from '../Games/GameContext'
 import EncounterContext from './EncounterContext'
 import PptAvatar from './PptAvatar'
-import get from '../utilities/get'
+import * as get from '../utilities/get'
 import styles from './Encounter.module.scss'
+import PptName from './PptName'
+import PptDoneBtn from './PptDoneBtn'
 
-export default function EncounterParticipant({participant}) {
+export default function EncounterParticipant(props) {
 
+    const {participant, mode, hasActed} = props
+    const game = useContext(GameContext)
     const enc = useContext(EncounterContext)
-    const faction = get.faction(enc, participant.factionId)
+    const faction = get.faction(enc, props.participant.factionId)
 
     // ----------------------------------------------------
     if (participant.type === 'player') {
-        return (<PlayerCharacter p={participant} f={faction} />)
+        return (<PlayerCharacter g={game} f={faction} {...props} />)
     } else if (participant.type === 'npc') {
-        return (<NonPlayerCharacter p={participant} f={faction} />)
+        return (<NonPlayerCharacter g={game} f={faction} {...props} />)
     } else if (participant.type === 'environment') {
-        return (<EnvCharacter p={participant} f={faction} />)
+        return (<EnvCharacter g={game} f={faction} {...props} />)
     } else {
-        return (
-            <GenericParticipant p={participant} f={faction}>
+            return (
+            <GenericParticipant g={game} f={faction} {...props}>
                 I don't know how to draw a participant of type {participant.type}.
             </GenericParticipant>
         )
     }
 }
 // ---------------------------------------------------------
-function GenericParticipant({p, f, children}) {
+// function GenericParticipant({g, p, f, hasActed, children}) {
+//     console.log(hasActed)
+
+function GenericParticipant(props) {
+    console.log(props)
+    const {p, f, mode, hasActed, children} = props
+    console.log(hasActed)
     const className = [styles.participant]
     if (f) {
         className.push(styles[f.colorScheme])
     }
     return (
         <div className={className.join(' ')}>
-            <PptAvatar p={p} />
+            {/* <PptAvatar p={p} /> */}
             {children}
+            {mode === 'up' && <PptDoneBtn onClick={()=> hasActed() } />}
         </div>
     )
 }
 // ---------------------------------------------------------
-function PlayerCharacter({p, f}) {
+function PlayerCharacter(props) {
+    const {g, participant} = props
+    const char = get.character(g, participant.characterId)
+    const player = get.person(g, participant.playerId)
     return (
-        <GenericParticipant p={p} f={f}>
-            {p.character.name} played by {p.player.name}
+        <GenericParticipant {...props}>
+            <PptName name={char.name} />
+            played by {player.name}
         </GenericParticipant>
     )
 }
 // ---------------------------------------------------------
-function NonPlayerCharacter({p, f}) {
+function NonPlayerCharacter(props) {
+    const {g, participant} = props
+    const char = get.character(g, participant.characterId)
     return (
-        <GenericParticipant p={p} f={f}>
-            {p.character.name}, an NPC
+        <GenericParticipant {...props}>
+            <PptName name={char.name} />
+            an NPC
         </GenericParticipant>
     )
 }
 // ---------------------------------------------------------
-function EnvCharacter({p, f}) {
+function EnvCharacter(props) {
+    const {g, participant} = props
     return (
-        <GenericParticipant p={p} f={f}>
-            {p.feature.name}
+        <GenericParticipant {...props}>
+            <PptName name={participant.feature.name} />
         </GenericParticipant>
     )
 }
