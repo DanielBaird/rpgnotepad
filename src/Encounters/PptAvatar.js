@@ -14,7 +14,6 @@ export default function PptAvatar({p}) {
 
     useEffect( ()=> {
         setInitials( get.initials(game, enc, p) )
-        console.log('set initials to ', get.initials(game, enc, p))
     }, [game, p, enc])
 
     return (

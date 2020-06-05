@@ -31,10 +31,16 @@ export default function Encounter({encounterId}) {
     }, [game, encounterId])
     // ----------------------------------------------------
     // sort the participants
-    useEffect( ()=> {
+    function sortParticipants() {
+        console.log('sorting')
         setOrdered(encounter.participants.sort( (p1, p2) => {
             return (p1.actRank - p2.actRank)
         }))
+    }
+    // ----------------------------------------------------
+    // sort the participants
+    useEffect( ()=> {
+        sortParticipants()
     }, [orderBy, encounter])
     // ----------------------------------------------------
     // record that someone has acted
@@ -50,6 +56,17 @@ export default function Encounter({encounterId}) {
         )
     }
     // ----------------------------------------------------
+    // record that someone has delayed
+    function hasDelayed(participant) {
+        let pIndex = ordered.findIndex((p) => p === participant)
+        console.log('index ' + pIndex)
+        if (pIndex >= 0 && ordered[pIndex + 1]) {
+            participant.actRank = ordered[pIndex + 1].actRank + 1
+            console.log('new actRank is ', participant.actRank)
+        }
+        sortParticipants()
+    }
+    // ----------------------------------------------------
     // divide into ready and acted
     const ready = ordered.filter( 
         (p) => (!p.round || p.round < round)
@@ -57,6 +74,7 @@ export default function Encounter({encounterId}) {
         return (
             <EncounterParticipant 
                 hasActed={()=> hasActed(p) }
+                hasDelayed={()=> hasDelayed(p) }
                 mode={index === 0 ? 'up' : 'ready'}
                 participant={p}
                 key={index}
@@ -66,7 +84,6 @@ export default function Encounter({encounterId}) {
     if (ordered.length > 0 && ready.length < 1) {
         setRound(round + 1)
     }
-    console.log(ready)
     // ----------------------------------------------------
     // divide into ready and acted
     const acted = ordered.filter( 
@@ -75,7 +92,8 @@ export default function Encounter({encounterId}) {
         return (
             <EncounterParticipant 
                 hasActed={()=> hasActed(p) }
-                state='acted'
+                hasDelayed={()=> hasDelayed(p) }
+                mode='acted'
                 participant={p} 
                 key={index}
             />

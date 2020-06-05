@@ -92,18 +92,25 @@ $participant-gap: $participant-height / 5;
 
     }
 
-    .PptDoneBtn {
+    .PptDoneBtn, .PptDelayBtn {
         display: flex;
-        flex-direction: column;
+        align-items: center;
+        justify-content: center;
         color: inherit;
         background-color: currentColor;
         padding: 0 1em;
         margin: 0;
-        margin-left: auto;
-        float: right;
         > span {
             color: rgba(255,255,255, 0.75)
         }
+    }
+    .PptDoneBtn {
+        flex: 3 1 0;
+    }
+    .PptDelayBtn {
+        flex: 2 1 0;
+        font-size: 80%;
+        border-top: 1px solid #fff
     }
 }
 
@@ -146,5 +153,15 @@ $participant-gap: $participant-height / 5;
 
     &:before {
         content: 'Round ';
+    }
+}
+
+.Stack {
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    &.right {
+        margin-left: auto;
+        float: right;
     }
 }
