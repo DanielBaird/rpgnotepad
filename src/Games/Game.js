@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom'
 import GameLoader from '../utilities/GameLoader'
 import GameContext from './GameContext'
 import GameEncounter from './GameEncounter'
-import Encounter from '../Encounters/Encounter'
+import Encounter from '../Encounters/Encounter2'
 import styles from './Game.module.scss'
 
 export default function Game(props) {

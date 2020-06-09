@@ -1,6 +1,8 @@
 
 import React, { useEffect, useState, useContext } from 'react'
 
+import useEncounter from './EncounterState'
+
 import GameContext from '../Games/GameContext'
 import EncounterContext from './EncounterContext'
 import EncounterParticipant from './EncounterParticipant'

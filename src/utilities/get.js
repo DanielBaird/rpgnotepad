@@ -65,7 +65,7 @@ export function initials(game, encounter, participant) {
         }
     }
 
-    // generate naïve initials for this ppt
+    // generate naïve initials for this actor
     let answer = simpleInitials(participant)
     let answerPosition = 0
     let total = 0

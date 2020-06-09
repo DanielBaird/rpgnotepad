@@ -24,6 +24,7 @@ function App() {
             <Game />
           </Route>
 
+
         </Switch>
       </Router>
     </div>
