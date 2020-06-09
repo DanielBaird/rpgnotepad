@@ -1,14 +1,11 @@
 
-import React, {useState, useContext, useEffect} from 'react'
+import React from 'react'
 
-import * as get from '../utilities/get'
+import * as get from './EncounterState'
 import styles from './Encounter.module.scss'
-import EncounterContext from './EncounterContext'
 
 export default function ActorName({name}) {
-    console.log(name)
     const {pre, core, post} = get.nameParts(name)
-    const enc = useContext(EncounterContext)
 
     return (
         <div className={styles.PptName}>

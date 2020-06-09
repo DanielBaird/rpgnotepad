@@ -1,6 +1,6 @@
 
 import cloneDeep from 'lodash/cloneDeep'
-import { useEffect, useReducer } from 'react'
+import { useReducer } from 'react'
 import { produce } from 'immer'
 
 // --------------------------------------------------------
@@ -137,7 +137,6 @@ export default function useEncounter(encounterId) {
 // some utility funcs for getting specific data out of enc
 // --------------------------------------------------------
 export function faction(enc, factionId) {
-    let f = null
     if (enc && enc.factions && enc.factions[factionId]) {
         return enc.factions[factionId]
     } else { return null }

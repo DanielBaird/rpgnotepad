@@ -1,13 +1,13 @@
 
-import React, {useState, useContext, useEffect} from 'react'
+import React, {useContext} from 'react'
 import EncounterContext from './EncounterContext'
 import styles from './Encounter.module.scss'
 
 export default function ActorDelayButton({a}) {
-    const {enc, dispatch} = useContext(EncounterContext)
+    const {dispatch} = useContext(EncounterContext)
     return (
         <button className={styles.PptDelayBtn} onClick={()=>{
-            dispatch({action: 'ActorCompleteTurn', payload: {actorId: a.actorId}})
+            dispatch({action: 'actorCompleteTurn', payload: {actorId: a.actorId}})
         }}>
             <span>Wait</span>
         </button>

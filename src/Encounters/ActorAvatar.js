@@ -3,7 +3,6 @@ import React, {useState, useContext, useEffect} from 'react'
 
 import * as get from './EncounterState'
 import styles from './Encounter.module.scss'
-import GameContext from '../Games/GameContext'
 import EncounterContext from './EncounterContext'
 
 export default function ActorAvatar({a}) {

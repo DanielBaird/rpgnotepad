@@ -1,7 +1,6 @@
 
 import React, {useContext} from 'react'
 
-import GameContext from '../Games/GameContext'
 import EncounterContext from './EncounterContext'
 import ActorAvatar from './ActorAvatar'
 import * as get from './EncounterState'
@@ -13,14 +12,13 @@ import ActorDelayBtn from './ActorDelayBtn'
 
 export default function EncActor(props) {
     const {actor} = props
-	const {enc, dispatch} = useContext(EncounterContext)
 	// ----------------------------------------------------
 	if (actor.type === 'player') {
 		return (<ActorPC {...props} />)
 	} else if (actor.type === 'npc') {
-		return (<NonPlayerCharacter {...props} />)
+		return (<ActorNPC {...props} />)
 	} else if (actor.type === 'environment') {
-		return (<EnvCharacter {...props} />)
+		return (<ActorEnv {...props} />)
 	} else {
 			return (
 			<ActorGeneric {...props}>
@@ -31,8 +29,10 @@ export default function EncActor(props) {
 }
 // ---------------------------------------------------------
 function ActorGeneric(props) {
-	const {actor, f, mode, hasActed, hasDelayed, children} = props
+	const {actor, mode, children} = props
+	const {enc} = useContext(EncounterContext)
 	const className = [styles.participant]
+	const f = get.faction(enc, actor.factionId)
 	if (f) {
 		className.push(styles[f.colorScheme])
 	}
@@ -52,7 +52,7 @@ function ActorGeneric(props) {
 // ---------------------------------------------------------
 function ActorPC(props) {
     const {actor} = props
-    const {enc, dispatch} = useContext(EncounterContext)
+    const {enc} = useContext(EncounterContext)
 	const char = get.character(enc, actor.characterId)
     const player = get.person(enc, actor.playerId)
 	return (
@@ -63,9 +63,9 @@ function ActorPC(props) {
 	)
 }
 // ---------------------------------------------------------
-function NonPlayerCharacter(props) {
+function ActorNPC(props) {
 	const {actor} = props
-    const {enc, dispatch} = useContext(EncounterContext)
+    const {enc} = useContext(EncounterContext)
 	const char = get.character(enc, actor.characterId)
 	return (
 		<ActorGeneric {...props}>
@@ -75,7 +75,7 @@ function NonPlayerCharacter(props) {
 	)
 }
 // ---------------------------------------------------------
-function EnvCharacter(props) {
+function ActorEnv(props) {
 	const {actor} = props
 	return (
 		<ActorGeneric {...props}>
