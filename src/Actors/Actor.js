@@ -1,16 +1,17 @@
 
 import React, {useContext} from 'react'
 
-import EncounterContext from './EncounterContext'
+import EncounterContext from '../Encounters/EncounterContext'
 import ActorAvatar from './ActorAvatar'
-import * as get from './EncounterState'
-import styles from './Encounter.module.scss'
+import * as get from '../Encounters/EncounterState'
+import styles from '../Encounters/Encounter.module.scss'
 import Stack from './Stack'
+import Text from './Text'
 import ActorName from './ActorName'
 import ActorDoneBtn from './ActorDoneBtn'
 import ActorDelayBtn from './ActorDelayBtn'
 
-export default function EncActor(props) {
+export default function Actor(props) {
     const {actor} = props
 	// ----------------------------------------------------
 	if (actor.type === 'player') {
@@ -22,7 +23,9 @@ export default function EncActor(props) {
 	} else {
 			return (
 			<ActorGeneric {...props}>
-				I don't know how to draw a participant of type {actor.type}.
+				<Text>
+					I don't know how to draw a participant of type {actor.type}.
+				</Text>
 			</ActorGeneric>
 		)
 	}
@@ -31,7 +34,7 @@ export default function EncActor(props) {
 function ActorGeneric(props) {
 	const {actor, mode, children} = props
 	const {enc} = useContext(EncounterContext)
-	const className = [styles.participant]
+	const className = [styles.actor]
 	const f = get.faction(enc, actor.factionId)
 	if (f) {
 		className.push(styles[f.colorScheme])
@@ -58,7 +61,9 @@ function ActorPC(props) {
 	return (
 		<ActorGeneric {...props}>
 			<ActorName name={char.name} />
-			played by {player.name}
+			<Text>
+				played by {player.name}
+			</Text>
 		</ActorGeneric>
 	)
 }
@@ -70,7 +75,9 @@ function ActorNPC(props) {
 	return (
 		<ActorGeneric {...props}>
 			<ActorName name={char.name} />
-			an NPC
+			<Text>
+				an NPC
+			</Text>
 		</ActorGeneric>
 	)
 }

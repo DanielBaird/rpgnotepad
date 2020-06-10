@@ -1,12 +1,11 @@
 import React, {useContext} from 'react'
-import EncounterContext from './EncounterContext'
-import styles from './Encounter.module.scss'
+import EncounterContext from '../Encounters/EncounterContext'
+import styles from '../Encounters/Encounter.module.scss'
 
-export default function PptDoneBtn({a}) {
-    console.log(useContext(EncounterContext))
+export default function ActorDoneBtn({a}) {
     const {dispatch} = useContext(EncounterContext)
     return (
-        <button className={styles.PptDoneBtn} onClick={()=>{
+        <button className={styles.ActorDoneBtn} onClick={()=>{
             dispatch({type: 'actorCompleteTurn', payload: {actorId: a.actorId}})
         }}>
             <span>Done</span>

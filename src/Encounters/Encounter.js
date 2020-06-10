@@ -4,7 +4,7 @@ import React, { useEffect, useState, useContext } from 'react'
 import useEncounter from './EncounterState'
 
 import EncounterContext from './EncounterContext'
-import EncActor from './EncActor'
+import Actor from '../Actors/Actor'
 import styles from './Encounter.module.scss'
 
 export default function Encounter({encounterId}) {
@@ -42,7 +42,7 @@ export default function Encounter({encounterId}) {
                 <RoundMarker current />
                 <div className={styles.participantsList}>
                     { readyActors.map( (a, index)=>
-                        <EncActor
+                        <Actor
                             mode={index === 0 ? 'up' : 'ready'}
                             actor={a}
                             key={index}
@@ -54,7 +54,7 @@ export default function Encounter({encounterId}) {
                         <RoundMarker next />
                         <div className={styles.participantsList}>
                             { doneActors.map( (a, index)=>
-                                <EncActor
+                                <Actor
                                     mode="done"
                                     actor={a}
                                     key={index}

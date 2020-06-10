@@ -1,8 +1,8 @@
 
 @use "sass:color";
 
-$participant-height: 4em;
-$participant-gap: $participant-height / 5;
+$actor-height: 4em;
+$actor-gap: $actor-height / 5;
 
 .encounter {
     background:#ffffff66;
@@ -25,14 +25,14 @@ $participant-gap: $participant-height / 5;
 @mixin faction-theme($theme: 'default') {
     $color: faction-color($theme);
     color: $color;
-    box-shadow: inset 0 0 ($participant-height / 4) scale-color($color, $alpha: 90%);
+    box-shadow: inset 0 0 ($actor-height / 4) scale-color($color, $alpha: 90%);
 
     &:hover {
         background-color: color-mix($color, #fff);
     }
 }
 
-.participant {
+.actor {
     line-height: 1.1;
 
     display: flex;
@@ -40,10 +40,10 @@ $participant-gap: $participant-height / 5;
     justify-items: left;
     align-items: stretch;
 
-    min-height: $participant-height;
+    min-height: $actor-height;
 
     background-color: #fff;
-    margin: 0 0 $participant-gap ($participant-height / 2);
+    margin: 0 0 $actor-gap ($actor-height / 2);
     
     @include faction-theme();
 
@@ -55,27 +55,27 @@ $participant-gap: $participant-height / 5;
         justify-content: center;
     }
 
-    .PptAvatar {
-        $font-size-factor: ($participant-height / 2em);
+    .ActorAvatar {
+        $font-size-factor: ($actor-height / 2em);
         color: inherit;
         background-color: currentColor;
         text-align: center;
         text-shadow: 0 0 2px 0 currentColor;
         font-size: $font-size-factor * 1em;
-        line-height: (1/$font-size-factor) * $participant-height;
+        line-height: (1/$font-size-factor) * $actor-height;
 
-        height: (1/$font-size-factor) * $participant-height;
-        width: (1/$font-size-factor) * $participant-height;
-        border-radius: (1/$font-size-factor) * ($participant-height / 2);
-        margin-left: -1 * (1/$font-size-factor) * ($participant-height / 2);
+        height: (1/$font-size-factor) * $actor-height;
+        width: (1/$font-size-factor) * $actor-height;
+        border-radius: (1/$font-size-factor) * ($actor-height / 2);
+        margin-left: -1 * (1/$font-size-factor) * ($actor-height / 2);
 
-        .PptAvatarInitials {
+        .ActorAvatarInitials {
             color: #fff;
             opacity: 0.5;
         }
     }
 
-    .PptName {
+    .ActorName {
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -92,7 +92,7 @@ $participant-gap: $participant-height / 5;
 
     }
 
-    .PptDoneBtn, .PptDelayBtn {
+    .ActorDoneBtn, .ActorDelayBtn {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -104,10 +104,10 @@ $participant-gap: $participant-height / 5;
             color: rgba(255,255,255, 0.75)
         }
     }
-    .PptDoneBtn {
+    .ActorDoneBtn {
         flex: 3 1 0;
     }
-    .PptDelayBtn {
+    .ActorDelayBtn {
         flex: 2 1 0;
         font-size: 80%;
         border-top: 1px solid #fff
@@ -116,12 +116,13 @@ $participant-gap: $participant-height / 5;
 
 .RoundMarker {
     $font-size-factor: 1.2;
+    $gradient-scale: 0.75;
     font-size: $font-size-factor * 1em;
-    $marker-height: $participant-height / $font-size-factor * 0.66;
+    $marker-height: $actor-height / $font-size-factor * 0.66;
     height: $marker-height;
     line-height: $marker-height;
     padding: 0 $marker-height * 1.5;
-    margin: $participant-gap*3 0 $participant-gap;
+    margin: $actor-gap*3 0 $actor-gap;
     color: rgba(255,255,255, 1);
     text-shadow: 
     12em 0 0 rgba(255,255,255, 0.66),
@@ -131,17 +132,21 @@ $participant-gap: $participant-height / 5;
     60em 0 0 rgba(255,255,255, 0.11),
     72em 0 0 rgba(255,255,255, 0.11)
     ;
+    // background-color: #000;
+    // border-radius: $marker-height/2;
     background-image: 
     linear-gradient(to right, 
         rgba(0,0,0, 0), 
-        rgba(0,0,0, 0.66) $marker-height / 2,
-        rgba(0,0,0, 0.75) $marker-height / 1.5,
+        rgba(0,0,0, 0.1) $marker-height / 10 * $gradient-scale,
+        rgba(0,0,0, 0.66) $marker-height / 1.5 * $gradient-scale,
+        rgba(0,0,0, 0.75) $marker-height / 1 * $gradient-scale,
         rgba(0,0,0, 0.75) 50%,
         rgba(0,0,0, 0.0) 50%
     ), linear-gradient(to left, 
         rgba(0,0,0, 0), 
-        rgba(0,0,0, 0.66) $marker-height / 2,
-        rgba(0,0,0, 0.75) $marker-height / 1.5,
+        rgba(0,0,0, 0.1) $marker-height / 10 * $gradient-scale,
+        rgba(0,0,0, 0.66) $marker-height / 1.5 * $gradient-scale,
+        rgba(0,0,0, 0.75) $marker-height / 1 * $gradient-scale,
         rgba(0,0,0, 0.75) 50%,
         rgba(0,0,0, 0.0) 50%
     );
@@ -163,5 +168,8 @@ $participant-gap: $participant-height / 5;
     &.right {
         margin-left: auto;
         float: right;
+    }
+    &.StackMiddle {
+        justify-content: center;
     }
 }
