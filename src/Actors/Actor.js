@@ -11,6 +11,8 @@ import ActorName from './ActorName'
 import ActorDoneBtn from './ActorDoneBtn'
 import ActorDelayBtn from './ActorDelayBtn'
 
+import Bar from '../layout/Bar'
+
 export default function Actor(props) {
     const {actor} = props
 	// ----------------------------------------------------
@@ -39,7 +41,19 @@ function ActorGeneric(props) {
 	if (f) {
 		className.push(styles[f.colorScheme])
 	}
+
+	let left = [
+		<ActorAvatar a={actor} />
+	]
+	let right = [
+		<Stack className={[styles.Stack, styles.right].join(' ')}>
+			<ActorDoneBtn a={actor} />
+			<ActorDelayBtn a={actor} />
+		</Stack>
+	]
+
 	return (
+	<>
 		<div className={className.join(' ')}>
 			<ActorAvatar a={actor} />
 			{children}
@@ -50,6 +64,11 @@ function ActorGeneric(props) {
 				</Stack>
 			: null }
 		</div>
+
+		<Bar left={'asd'} right={right}>
+		{children}
+		</Bar>
+	</>
 	)
 }
 // ---------------------------------------------------------

@@ -1,0 +1,81 @@
+
+@use "sass:color";
+
+$bar-height: 5em;
+
+.Bar {
+    display: flex;
+    flex-direction: row;
+    // width: 100%;
+    height: $bar-height;
+}
+.Bar.withLabel {
+    margin-left: $bar-height / 2;
+}
+
+.leftControls {
+    flex: 0 0 auto;
+    background-color: pink;
+}
+
+.rightControls {
+    flex: 0 0 auto;
+    background-color: pink;
+}
+
+.main {
+    flex: 1 0 auto;
+    background-color: #9cf;
+
+    display: flex;
+    flex-direction: row;
+}
+.Bar.withLabel .main {
+    padding-left: $bar-height / 2;
+}
+
+.BarLabel {
+
+    opacity: 0.3;
+
+    flex: 0 0 auto;
+    $font-size-factor: ($bar-height / 2em);
+    font-size: $font-size-factor * 1em;
+    $size: (1/$font-size-factor) * $bar-height;
+    color: inherit;
+    background-color: currentColor;
+    text-align: center;
+    text-shadow: 0 0 2px 0 currentColor;
+    line-height: (1 / $font-size-factor) * $bar-height;
+    height: $size;
+    width: $size;
+    z-index: 1;
+
+    border-radius: ($size / 2);
+    margin: 0 -1 * ($size / 2);
+
+    .BarLabelText {
+        color: #fff;
+        opacity: 0.5;
+    }
+}
+@media screen and (max-width: 600px) {
+    $font-size-factor: ($bar-height / 3em);
+    $size: (1/$font-size-factor) * $bar-height;
+    .Bar.withLabel {
+        margin-left: $size / 2;
+        .main {
+            padding-left: $size / 4;
+        }
+    }
+    .BarLabel {
+        align-self: center;
+        font-size: $font-size-factor * 1em;
+        height: $size / 2;
+        width: $size;
+        line-height: $size/2;
+        transform: rotate(270deg);
+        margin-left: -1 * $size / 2;
+        margin-right: -1 * $size / 2;
+    }
+}

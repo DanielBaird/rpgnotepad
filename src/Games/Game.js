@@ -8,12 +8,16 @@ import GameEncounter from './GameEncounter'
 import Encounter from '../Encounters/Encounter'
 import styles from './Game.module.scss'
 
+import useBodyClass from '../utilities/useBodyClass'
+
 export default function Game(props) {
 
     // ----------------------------------------------------
     const {gameId, encId} = useParams()
-    const loadingGame = GameLoader.getBlankGame({name: 'loading...'})
-    const [game, setGame] = useState(loadingGame)
+    const [game, setGame] = useState(null)
+    const [small, setSmall] = useState(false)
+    const [large, setLarge] = useState(false)
+    const [size, setSize] = useState(false)
     // ----------------------------------------------------
     // load the game
     useEffect( ()=> {
@@ -22,23 +26,41 @@ export default function Game(props) {
         }
     }, [gameId])
     // ----------------------------------------------------
-    const encounters = game.encounters.map( (e) => {
-        return (<GameEncounter e={e} key={e.encounterId} />)
-    })
+    // apply the font size switcher
+    useBodyClass('small', small)
+    useBodyClass('large', large)
+    useEffect( ()=> {
+        setSmall(size === 's')
+        setLarge(size === 'l')
+    }, [size, setSmall, setLarge])
     // ----------------------------------------------------
-    return (
-        <GameContext.Provider value={game}>
-            <div className={styles.game}>
-                <h1>{game.name} <small>{game.gameId}</small></h1>
-                { encId ?
-                    <Encounter encounterId={encId} />
-                :
-                    <div className={styles.encounterList}>
-                        {encounters}
-                    </div>
-                }
-            </div>
-        </GameContext.Provider>
-    )
+    if (!game) {
+        return (
+            <p>loading...</p>
+        )
+    } else {
+        const encounters = Object.keys(game.encounters).map( (eId) => {
+            const e = game.encounters[eId]
+            return (<GameEncounter e={e} key={eId} />)
+        })
+        return (
+            <GameContext.Provider value={game}>
+                <div className={styles.game}>
+                    <h1>{game.name} <small>{game.gameId}</small></h1>
+                    <button onClick={()=> setSize('s')}>small</button>
+                    <button onClick={()=> setSize('m')}>medium</button>
+                    <button onClick={()=> setSize('l')}>large</button>
+                    { encId ?
+                        <Encounter encounterId={encId} />
+                    :
+                        <div className={styles.encounterList}>
+                            {encounters}
+                        </div>
+                    }
+                </div>
+            </GameContext.Provider>
+        )            
+    }
+    // ----------------------------------------------------
 }
 

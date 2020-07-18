@@ -4,106 +4,36 @@ import { useReducer } from 'react'
 import { produce } from 'immer'
 
 // --------------------------------------------------------
-const cpgn = {
-    "gameId": "g1234",
-    "name": "Super Cool Game",
-    "ownerId": "p2345",
-    "people": {
-        "p2345": { "name": "Daniel Baird" },
-        "p3456": { "name": "Elora Baird" }
-    },
-    "characters": {
-        "c5678": {
-            "name": ["Lady", "Elorabelle", "the Graceful"],
-            "playerId": "p3456",
-            "HP": 20
-        },
-        "c6789": {
-            "name": ["Speedy Sam"],
-            "playerId": "p3456",
-            "HP": 15
-        },
-        "c7766": {
-            "name": ["Krosmonoff", "the Black"],
-            "playerId": "p2345",
-            "HP": 40
+function determineActionOrder(actors) {
+    return Object.keys(actors).sort( (a,b) => {
+        if (actors[a].delayedBy !== !actors[b].delayedBy) {
+            return actors[a].delayedBy - actors[b].delayedBy
         }
-    },
-    "encounters": {
-        "e9876": {
-            "encounterId": "e9876",
-            "name": "Test Encounter",
-            "factions": {
-                "f123": {
-                    "name": "The Erstwhile Players",
-                    "colorScheme": "green"
-                },
-                "f234": {
-                    "name": "Roaming Killers of Dusk",
-                    "colorScheme": "red"
-                },
-                "f345": {
-                    "name": "Environment",
-                    "colorScheme": "brown"
-                }
-            },
-            "actors": {
-                "a4321": {
-                    "actorId": "a4321",
-                    "type": "player",
-                    "playerId": "p3456",
-                    "characterId": "c5678",
-                    "factionId": "f123",
-                    "actRank": 8,
-                    "readyRound": 1
-                },
-                "a3214": {
-                    "actorId": "a3214",
-                    "type": "player",
-                    "playerId": "p3456",
-                    "characterId": "c6789",
-                    "factionId": "f123",
-                    "actRank": 3,
-                    "readyRound": 1
-                },
-                "a2143": {
-                    "actorId": "a2143",
-                    "type": "npc",
-                    "characterId": "c7766",
-                    "factionId": "f234",
-                    "actRank": 3,
-                    "readyRound": 1
-                },
-                "a1432": {
-                    "actorId": "a1432",
-                    "type": "environment",
-                    "feature": {
-                        "name": "Earthquake"
-                    },
-                    "factionId": "f345",
-                    "actRank": 3,
-                    "readyRound": 1
-                }
-            }
-        }
-    }
+        return actors[b].actRank - actors[a].actRank
+    })
 }
 // --------------------------------------------------------
 function encReducer(state, action) {
     const {type, payload} = action
+    console.log(action)
     switch (type) {
         // - - - - - - - - - - - - - - - - - - - - - - - -
         case 'endRound': return produce(state, (enc)=> {
             enc.round += 1
+            enc.actionOrder = determineActionOrder(enc.actors)
         })
         // - - - - - - - - - - - - - - - - - - - - - - - -
         case 'actorCompleteTurn': return produce(state, (enc)=> {
             const {actorId} = payload
             let actor = enc.actors[actorId]
-            if (!actor.readyRound) {
-                actor.readyRound = 1
-            }
+            actor.delayedBy = 0
             actor.readyRound += 1
+        })
+        // - - - - - - - - - - - - - - - - - - - - - - - -
+        case 'actorDelayTurn': return produce(state, (enc)=> {
+            enc.actors[payload.actorId].delayedBy += 1
+            enc.actionOrder = determineActionOrder(enc.actors)
+            console.log(enc.actionOrder)
         })
         // - - - - - - - - - - - - - - - - - - - - - - - -
         // - - - - - - - - - - - - - - - - - - - - - - - -
@@ -114,23 +44,33 @@ function encReducer(state, action) {
     }    
 }
 // --------------------------------------------------------
-function prepEncounter(encId) {
+function prepEncounter([campaign, encId]) {
+
+    console.log(campaign)
+
     // initialising encounter from cpgn, given encId
     // start with a copy of the encounter
-    let enc = cloneDeep(cpgn.encounters[encId])
+    let enc = cloneDeep(campaign.encounters[encId])
     // copy in the campaign's character list
-    enc.characters = cloneDeep(cpgn.characters)
+    enc.characters = cloneDeep(campaign.characters)
     // copy in the campaign's player list
-    enc.people = cloneDeep(cpgn.people)
+    enc.people = cloneDeep(campaign.people)
     // set the current round
     enc.round = 1
+    // give actors their transient properties
+    for (const aId in enc.actors) {
+        enc.actors[aId].readyRound = 1
+        enc.actors[aId].delayedBy = 0
+    }
+    // establish the action order
+    enc.actionOrder = determineActionOrder(enc.actors)
     return (enc)
 }
 // --------------------------------------------------------
 // this custom hook gets an encounter interaction point 
 // ready, with initial state and reducer all set up.
-export default function useEncounter(encounterId) {
-    return useReducer(encReducer, encounterId, prepEncounter)
+export default function useEncounter(campaign, encounterId) {
+    return useReducer(encReducer, [campaign, encounterId], prepEncounter)
 }
 // --------------------------------------------------------
 // --------------------------------------------------------

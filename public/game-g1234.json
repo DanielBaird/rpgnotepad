@@ -24,8 +24,8 @@
             "HP": 40
         }
     },
-    "encounters": [
-        {
+    "encounters": {
+        "e9876": {
             "encounterId": "e9876",
             "name": "Test Encounter",
             "factions": {
@@ -42,37 +42,44 @@
                     "colorScheme": "brown"
                 }
             },
-            "participants": [
-                {
+            "actors": {
+                "a4321": {
+                    "actorId": "a4321",
                     "type": "player",
                     "playerId": "p3456",
                     "characterId": "c5678",
                     "factionId": "f123",
-                    "actRank": 8
+                    "actRank": 8,
+                    "readyRound": 1
                 },
-                {
+                "a3214": {
+                    "actorId": "a3214",
                     "type": "player",
                     "playerId": "p3456",
                     "characterId": "c6789",
                     "factionId": "f123",
-                    "actRank": 3
+                    "actRank": 3,
+                    "readyRound": 1
                 },
-                {
+                "a2143": {
+                    "actorId": "a2143",
                     "type": "npc",
                     "characterId": "c7766",
                     "factionId": "f234",
-                    "actRank": 3
+                    "actRank": 3,
+                    "readyRound": 1
                 },
-                {
+                "a1432": {
+                    "actorId": "a1432",
                     "type": "environment",
                     "feature": {
                         "name": "Earthquake"
                     },
                     "factionId": "f345",
-                    "actRank": 3
+                    "actRank": 3,
+                    "readyRound": 1
                 }
-
-            ]
+            }
         }
-    ]
+    }
 }

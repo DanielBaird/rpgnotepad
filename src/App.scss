@@ -1,12 +1,26 @@
 
+@function responsiveSize($minFont, $minWidth, $maxFont, $maxWidth) {
+  @return calc( #{1px * $minFont} + #{$maxFont - $minFont} * (100vw - #{1px * $minWidth}) / #{$maxWidth - $minWidth} )
+}
+
 body {
   font-size: 16px;
+  font-size: responsiveSize(12, 300, 24, 1200);
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+body.small {
+  font-size: 13px;
+  font-size: responsiveSize(10, 300, 18, 1200);
+}
+body.large {
+  font-size: 20px;
+  font-size: responsiveSize(14, 300, 30, 1200);
 }
 
 code {

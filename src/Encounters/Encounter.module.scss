@@ -6,12 +6,16 @@ $actor-gap: $actor-height / 5;
 
 .encounter {
     background:#ffffff66;
-    padding: 2em;
+    padding: 0.5em;
+    padding: 2vw;
 
     h1 {
         padding: 0 0 1em 0;
         text-shadow: 0 0 2px #fff;
     }
+}
+@media screen and (min-width: 800px) {
+    // .encounter { padding: 2em; }
 }
 
 @function faction-color($theme: 'default') {
@@ -25,7 +29,8 @@ $actor-gap: $actor-height / 5;
 @mixin faction-theme($theme: 'default') {
     $color: faction-color($theme);
     color: $color;
-    box-shadow: inset 0 0 ($actor-height / 4) scale-color($color, $alpha: 90%);
+    // box-shadow: inset 0 0 ($actor-height / 8) scale-color($color, $alpha: 100);
+    // border: 1px solid currentColor;
 
     &:hover {
         background-color: color-mix($color, #fff);
@@ -42,7 +47,10 @@ $actor-gap: $actor-height / 5;
 
     min-height: $actor-height;
 
-    background-color: #fff;
+    background-color: rgba(255,255,255, 0.8);
+    &:hover {
+        background-color: rgba(255,255,255, 1);
+    }
     margin: 0 0 $actor-gap ($actor-height / 2);
     
     @include faction-theme();
@@ -55,68 +63,88 @@ $actor-gap: $actor-height / 5;
         justify-content: center;
     }
 
+}
+
+.ActorAvatar {
+    flex: 0 0 auto;
+    $font-size-factor: ($actor-height / 2em);
+    $size: (1/$font-size-factor) * $actor-height;
+    color: inherit;
+    background-color: currentColor;
+    text-align: center;
+    text-shadow: 0 0 2px 0 currentColor;
+    font-size: $font-size-factor * 1em;
+    line-height: (1 / $font-size-factor) * $actor-height;
+    height: $size;
+    width: $size;
+
+    border-radius: ($size / 2);
+    margin-left: -1 * ($size / 2);
+
+    .ActorAvatarInitials {
+        color: #fff;
+        opacity: 0.5;
+    }
+}
+@media screen and (max-width: 600px) {
+    $font-size-factor: ($actor-height / 3em);
+    $size: (1/$font-size-factor) * $actor-height;
+    .actor {
+        margin-left: $size / 4;
+    }
     .ActorAvatar {
-        $font-size-factor: ($actor-height / 2em);
-        color: inherit;
-        background-color: currentColor;
-        text-align: center;
-        text-shadow: 0 0 2px 0 currentColor;
+        align-self: center;
         font-size: $font-size-factor * 1em;
-        line-height: (1/$font-size-factor) * $actor-height;
-
-        height: (1/$font-size-factor) * $actor-height;
-        width: (1/$font-size-factor) * $actor-height;
-        border-radius: (1/$font-size-factor) * ($actor-height / 2);
-        margin-left: -1 * (1/$font-size-factor) * ($actor-height / 2);
-
-        .ActorAvatarInitials {
-            color: #fff;
-            opacity: 0.5;
-        }
+        height: $size/2;
+        width: $size;
+        line-height: $size/2;
+        transform: rotate(270deg);
+        margin-left: -1 * $size / 2;
+        margin-right: -1 * ($size / 3);
     }
+}
 
-    .ActorName {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
+.ActorName {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 
-        padding: 0 0.5em;
+    padding: 0 0.5em;
 
-        .pre, .post {
-            font-size: 80%;
-        }
-        .core {
-            font-weight: bold;
-            font-size: 120%;
-        }
-
-    }
-
-    .ActorDoneBtn, .ActorDelayBtn {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: inherit;
-        background-color: currentColor;
-        padding: 0 1em;
-        margin: 0;
-        > span {
-            color: rgba(255,255,255, 0.75)
-        }
-    }
-    .ActorDoneBtn {
-        flex: 3 1 0;
-    }
-    .ActorDelayBtn {
-        flex: 2 1 0;
+    .pre, .post {
         font-size: 80%;
-        border-top: 1px solid #fff
     }
+    .core {
+        font-weight: bold;
+        font-size: 120%;
+    }
+
+}
+
+.ActorDoneBtn, .ActorDelayBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: inherit;
+    background-color: currentColor;
+    padding: 0 1em;
+    margin: 0;
+    > span {
+        color: rgba(255,255,255, 0.75)
+    }
+}
+.ActorDoneBtn {
+    flex: 3 1 0;
+}
+.ActorDelayBtn {
+    flex: 2 1 0;
+    font-size: 80%;
+    border-top: 1px solid #fff
 }
 
 .RoundMarker {
     $font-size-factor: 1.2;
-    $gradient-scale: 0.75;
+    $gradient-scale: 0.5;
     font-size: $font-size-factor * 1em;
     $marker-height: $actor-height / $font-size-factor * 0.66;
     height: $marker-height;
@@ -124,40 +152,47 @@ $actor-gap: $actor-height / 5;
     padding: 0 $marker-height * 1.5;
     margin: $actor-gap*3 0 $actor-gap;
     color: rgba(255,255,255, 1);
-    text-shadow: 
-    12em 0 0 rgba(255,255,255, 0.66),
-    24em 0 0 rgba(255,255,255, 0.55),
-    36em 0 0 rgba(255,255,255, 0.44),
-    48em 0 0 rgba(255,255,255, 0.33),
-    60em 0 0 rgba(255,255,255, 0.11),
-    72em 0 0 rgba(255,255,255, 0.11)
-    ;
-    // background-color: #000;
-    // border-radius: $marker-height/2;
-    background-image: 
-    linear-gradient(to right, 
+    text-align: center;
+    letter-spacing: 0.2vw;
+    background-image: linear-gradient(to right, 
         rgba(0,0,0, 0), 
-        rgba(0,0,0, 0.1) $marker-height / 10 * $gradient-scale,
-        rgba(0,0,0, 0.66) $marker-height / 1.5 * $gradient-scale,
         rgba(0,0,0, 0.75) $marker-height / 1 * $gradient-scale,
-        rgba(0,0,0, 0.75) 50%,
-        rgba(0,0,0, 0.0) 50%
-    ), linear-gradient(to left, 
-        rgba(0,0,0, 0), 
-        rgba(0,0,0, 0.1) $marker-height / 10 * $gradient-scale,
-        rgba(0,0,0, 0.66) $marker-height / 1.5 * $gradient-scale,
-        rgba(0,0,0, 0.75) $marker-height / 1 * $gradient-scale,
-        rgba(0,0,0, 0.75) 50%,
-        rgba(0,0,0, 0.0) 50%
+        rgba(0,0,0, 0.75) calc(100% - #{$marker-height / 1 * $gradient-scale}),
+        rgba(0,0,0, 0.0) 100%
     );
     font-weight: 900;
 
-    &.future {
+    &.next {
         opacity: 0.5;
     }
 
-    &:before {
-        content: 'Round ';
+    &.current {
+        $ornament-width: 5vw;
+        $ornament-pad: 1vw;
+        // margin: 0 (-1 * ($ornament-width + $ornament-pad));
+        &:before {
+            background-image: linear-gradient(to right, rgba(255,255,255, 0), rgba(255,255,255, 1));
+        }
+        &:after {
+            background-image: linear-gradient(to left, rgba(255,255,255, 0), rgba(255,255,255, 1));
+        }
+        &:before, &:after {
+            content: '';
+            display: inline-block;
+            margin: 0 $ornament-pad;
+            width: $ornament-width;
+            height: 0.2em;
+            vertical-align: middle;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: $ornament-width 0.2em;
+        }
+    }
+}
+
+@media screen and (min-width: 800px) {
+    .RoundMarker.current {
+        margin: $actor-gap*3 0 $actor-gap;
     }
 }
 

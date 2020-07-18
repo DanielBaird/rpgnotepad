@@ -6,34 +6,36 @@ import useEncounter from './EncounterState'
 import EncounterContext from './EncounterContext'
 import Actor from '../Actors/Actor'
 import styles from './Encounter.module.scss'
+import GameContext from '../Games/GameContext'
 
 export default function Encounter({encounterId}) {
     // ----------------------------------------------------
+    // get the campaign
+    const campaign = useContext(GameContext)
     // get this encounter and its dispatcher
-    const [enc, dispatch] = useEncounter(encounterId)
-    // ----------------------------------------------------
-    // make a list of ready and done actors
+    const [enc, dispatch] = useEncounter(campaign, encounterId)
+
+    // ordered lists of actors
+    const [sortedActors, setSortedActors] = useState([])
     const [readyActors, setReadyActors] = useState([])
     const [doneActors, setDoneActors] = useState([])
+    // ----------------------------------------------------
+    // make an actor list sorted by their order of action
     useEffect( ()=> {
-        let ready = []
-        let done = []
-        for (const aId in enc.actors) {
-            const a = enc.actors[aId]
-            if (a.readyRound <= enc.round) {
-                ready.push(a)
-            } else {
-                done.push(a)
-            }
-        }
-        ready.sort((a,b)=> b.actRank - a.actRank )
-        done.sort((a,b)=> b.actRank - a.actRank )
+        let sorted = enc.actionOrder.map( (aId)=> enc.actors[aId] )
+        setSortedActors(sorted)
+    }, [enc, setSortedActors])
+    // ----------------------------------------------------
+    // split actor list into ready and had-their-turn
+    useEffect( ()=> {
+        let ready = sortedActors.filter((a) => a.readyRound <= enc.round )
+        let done = sortedActors.filter((a) => a.readyRound > enc.round )
         setReadyActors(ready)
         setDoneActors(done)
-        if (ready.length === 0) {
+        if (done.length > 0 && ready.length === 0) {
             dispatch({type:'endRound'})
         }
-    }, [enc, dispatch, setReadyActors, setDoneActors])
+    }, [enc, dispatch, sortedActors, setReadyActors, setDoneActors])
     // ----------------------------------------------------
     return (
         <EncounterContext.Provider value={{enc, dispatch}}>
@@ -71,8 +73,8 @@ export default function Encounter({encounterId}) {
 function RoundMarker({current, next}) {
     const {enc} = useContext(EncounterContext)
     return (
-        <div className={styles.RoundMarker + (next ? ' ' + styles.next : '')}>
-            {enc.round + (next ? 1 : 0)}
+        <div className={styles.RoundMarker + ' ' + (next ? styles.next : styles.current)}>
+            Round {enc.round + (next ? 1 : 0)}
         </div>
     )
 }
